@@ -21,7 +21,7 @@ export default function Navbar() {
           <div className="font-semibold text-lg tracking-tight">
             <Link to="/" className="flex items-center gap-2">
               <Music className="h-5 w-5" />
-              SoundWave
+              Music App
             </Link>
           </div>
           
