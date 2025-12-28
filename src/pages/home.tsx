@@ -22,6 +22,8 @@ export default function Home() {
     { title: "Electric Storm", artist: "Solar Flare", duration: "3:58", plays: 1560000, likes: 112000, albumColor: "bg-gradient-to-br from-yellow-400 to-amber-400" },
     { title: "City Rain", artist: "Urban Echoes", duration: "4:05", plays: 980000, likes: 72000, albumColor: "bg-gradient-to-br from-emerald-400 to-green-400" },
     { title: "Golden Hour", artist: "Velvet Skies", duration: "5:12", plays: 1340000, likes: 89000, albumColor: "bg-gradient-to-br from-orange-400 to-red-400" },
+    { title: "Starlight", artist: "Luna Echo", duration: "3:30", plays: 1120000, likes: 85000, albumColor: "bg-gradient-to-br from-pink-300 to-rose-300" },
+    { title: "Desert Highway", artist: "Midnight Drive", duration: "4:45", plays: 780000, likes: 59000, albumColor: "bg-gradient-to-br from-purple-300 to-indigo-300" },
   ]
 
   return (
@@ -65,7 +67,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Trending Music Section */}
+        {/* Trending Music Section - Now in Grid Layout */}
         <section>
           <SectionHeader
             title="Trending Now"
@@ -73,14 +75,15 @@ export default function Home() {
             moreLink="/music"
           />
           
-          <div className="grid gap-3">
+          {/* Changed from single column to grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {musicTracks.map((track, index) => (
               <MusicCard key={index} {...track} />
             ))}
           </div>
         </section>
 
-        {/* Stats Section (Optional) */}
+        {/* Stats Section */}
         <section className="mt-20 pt-12 border-t">
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
