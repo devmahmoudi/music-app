@@ -17,6 +17,15 @@ const router = createBrowserRouter([
         path: "about",
         element: <About />,
       },
+      // TODO: Implement these pages later
+      // {
+      //   path: "artists",
+      //   element: <Artists />,
+      // },
+      // {
+      //   path: "music",
+      //   element: <Music />,
+      // },
       {
         path: "*",
         element: <NotFound />,
