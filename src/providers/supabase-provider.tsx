@@ -20,7 +20,7 @@ const authLink = new SetContextLink(({ headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: supabaseGraphqlUrl ? `Bearer ${supabaseGraphqlUrl}` : "",
+      apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY || "",
     },
   };
 });
