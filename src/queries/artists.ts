@@ -57,3 +57,43 @@ export const GET_ARTISTS_COUNT = gql`
     }
   }
 `
+
+export const SEARCH_ARTISTS = gql`
+  query SearchArtists($search: String!, $first: Int, $after: Cursor) {
+    artistsCollection(
+      first: $first,
+      after: $after,
+      filter: { name: { ilike: $search } }
+    ) {
+      edges {
+        node {
+          id
+          name
+          description
+          image
+          slug
+          created_at
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+`
+
+export const SEARCH_ARTISTS_COUNT = gql`
+  query SearchArtistsCount($search: String!) {
+    artistsCollection(filter: { name: { ilike: $search } }) {
+      edges {
+        node {
+          id
+        }
+      }
+    }
+  }
+`
