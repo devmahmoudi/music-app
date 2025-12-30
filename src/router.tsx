@@ -3,6 +3,7 @@ import App from "./App"
 import Home from "./pages/home"
 import About from "./pages/about"
 import NotFound from "./pages/not-found"
+import Artists from "./pages/artists"
 
 const router = createBrowserRouter([
   {
@@ -10,18 +11,18 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        index: true,
+      index: true,
         element: <Home />,
       },
       {
         path: "about",
         element: <About />,
       },
+      {
+        path: "artists",
+        element: <Artists />,
+      },
       // TODO: Implement these pages later
-      // {
-      //   path: "artists",
-      //   element: <Artists />,
-      // },
       // {
       //   path: "music",
       //   element: <Music />,
