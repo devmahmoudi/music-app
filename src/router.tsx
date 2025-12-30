@@ -1,9 +1,10 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import App from "./App"
-import Home from "./pages/home"
-import About from "./pages/about"
-import NotFound from "./pages/not-found"
-import Artists from "./pages/artists"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./App";
+import Home from "./pages/home";
+import About from "./pages/about";
+import NotFound from "./pages/not-found";
+import Artists from "./pages/artist/artists";
+import Artist from "./pages/artist/artist";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +12,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-      index: true,
+        index: true,
         element: <Home />,
       },
       {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "artists",
         element: <Artists />,
+      },
+      {
+        path: "artists/:slug",
+        element: <Artist />,
       },
       // TODO: Implement these pages later
       // {
@@ -33,6 +38,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-])
+]);
 
-export default router
+export default router;
