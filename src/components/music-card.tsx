@@ -1,6 +1,7 @@
 import { Play, Clock, Music as MusicIcon } from "lucide-react"
 import { Link } from "react-router-dom"
 import type { Music } from "@/types/music"
+import { useState } from "react"
 
 interface MusicCardProps {
   music: Music
@@ -30,11 +31,29 @@ function getMockDuration(name: string) {
 }
 
 export default function MusicCard({ music }: MusicCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
   const imageColor = getMusicColor(music.name)
   const duration = getMockDuration(music.name)
 
+  // Quick play function
+  const handleQuickPlay = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    // Create audio element and play
+    const audio = new Audio(music.file)
+    audio.play().catch(error => {
+      console.error("Error playing audio:", error)
+    })
+  }
+
   return (
-    <Link to={`/music/${music.slug}`} className="group block">
+    <Link 
+      to={`/music/${music.slug}`} 
+      className="group block"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="relative overflow-hidden rounded-xl border bg-card p-4 transition-all hover:shadow-lg hover:-translate-y-1 h-full">
         {/* Album Art */}
         <div className="relative mb-4 overflow-hidden rounded-lg aspect-square">
@@ -52,9 +71,12 @@ export default function MusicCard({ music }: MusicCardProps) {
           
           {/* Play Button Overlay */}
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center transform group-hover:scale-110 transition-transform">
+            <button
+              onClick={handleQuickPlay}
+              className="h-12 w-12 rounded-full bg-white flex items-center justify-center transform group-hover:scale-110 transition-transform hover:scale-125"
+            >
               <Play className="h-6 w-6 text-black" />
-            </div>
+            </button>
           </div>
         </div>
         

@@ -3,8 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom"
 import { useQuery } from "@apollo/client/react"
 import {
   ArrowLeft,
-  Play,
-  Pause,
   Heart,
   Share2,
   Download,
@@ -14,22 +12,19 @@ import {
   User,
   ExternalLink
 } from "lucide-react"
+import AudioPlayer from "@/components/audio-player" // Add this import
 import {
   GET_MUSIC_BY_SLUG,
   GET_ARTIST_FOR_MUSIC
 } from "@/queries/music"
 import type {
-  MusicDetail,
   MusicsCollection,
-  ArtistsCollection
-} from "@/types"
+} from "@/types/music"
+import { ArtistsCollection } from "@/types/artist"
 
 export default function MusicDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [currentTime, setCurrentTime] = useState(0)
-  const [duration, setDuration] = useState(0)
 
   // Fetch music details
   const { loading: musicLoading, error: musicError, data: musicData } = 
@@ -50,45 +45,6 @@ export default function MusicDetailPage() {
   )
 
   const artist = artistData?.artistsCollection?.edges[0]?.node
-
-  // Mock audio player
-  useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        setCurrentTime(prev => {
-          if (prev >= duration) {
-            setIsPlaying(false)
-            return 0
-          }
-          return prev + 1
-        })
-      }, 1000)
-      return () => clearInterval(interval)
-    }
-  }, [isPlaying, duration])
-
-  // Set mock duration
-  useEffect(() => {
-    if (music) {
-      const hash = music.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
-      setDuration(180 + (hash % 120)) // 3-5 minutes
-    }
-  }, [music])
-
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying)
-  }
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, '0')}`
-  }
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value)
-    setCurrentTime(value)
-  }
 
   const handleDownload = () => {
     if (music?.file) {
@@ -208,43 +164,21 @@ export default function MusicDetailPage() {
                       }
                     </span>
                   </div>
-                  
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="h-4 w-4" />
-                    <span>{formatTime(duration)}</span>
-                  </div>
                 </div>
 
                 {/* Actions */}
                 <div className="flex flex-wrap gap-3">
-                  <button
-                    onClick={handlePlayPause}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                  >
-                    {isPlaying ? (
-                      <>
-                        <Pause className="h-5 w-5" />
-                        Pause
-                      </>
-                    ) : (
-                      <>
-                        <Play className="h-5 w-5" />
-                        Play
-                      </>
-                    )}
-                  </button>
-                  
-                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border hover:bg-accent transition-colors">
-                    <Heart className="h-5 w-5" />
-                    Like
-                  </button>
-                  
                   <button
                     onClick={handleDownload}
                     className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border hover:bg-accent transition-colors"
                   >
                     <Download className="h-5 w-5" />
                     Download
+                  </button>
+                  
+                  <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border hover:bg-accent transition-colors">
+                    <Heart className="h-5 w-5" />
+                    Like
                   </button>
                   
                   <button className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border hover:bg-accent transition-colors">
@@ -255,51 +189,14 @@ export default function MusicDetailPage() {
               </div>
             </div>
 
-            {/* Audio Player */}
+            {/* REAL Audio Player */}
             <div className="bg-card border rounded-xl p-6 mb-8">
-              <div className="space-y-4">
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{formatTime(currentTime)}</span>
-                    <span>{formatTime(duration)}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max={duration}
-                    value={currentTime}
-                    onChange={handleSeek}
-                    className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary"
-                  />
-                </div>
-
-                {/* Player Controls */}
-                <div className="flex items-center justify-center gap-6">
-                  <button className="p-3 rounded-full hover:bg-muted transition-colors">
-                    <MusicIcon className="h-5 w-5" />
-                  </button>
-                  <button className="p-3 rounded-full hover:bg-muted transition-colors">
-                    <ArrowLeft className="h-5 w-5" />
-                  </button>
-                  <button
-                    onClick={handlePlayPause}
-                    className="p-4 rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    {isPlaying ? (
-                      <Pause className="h-6 w-6" />
-                    ) : (
-                      <Play className="h-6 w-6" />
-                    )}
-                  </button>
-                  <button className="p-3 rounded-full hover:bg-muted transition-colors">
-                    <ArrowLeft className="h-5 w-5 rotate-180" />
-                  </button>
-                  <button className="p-3 rounded-full hover:bg-muted transition-colors">
-                    <MusicIcon className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
+              <AudioPlayer
+                audioUrl={music.file}
+                title={music.name}
+                artist={artist?.name}
+                coverImage={music.image || undefined}
+              />
             </div>
 
             {/* Lyrics */}
@@ -339,7 +236,6 @@ export default function MusicDetailPage() {
                   <div>
                     <h3 className="font-semibold mb-2">Details</h3>
                     <div className="space-y-1 text-sm text-muted-foreground">
-                      <div>Duration: {formatTime(duration)}</div>
                       <div>Added: {new Date(music.created_at).toLocaleDateString()}</div>
                       <div>Updated: {new Date(music.updated_at).toLocaleDateString()}</div>
                     </div>
@@ -396,7 +292,7 @@ export default function MusicDetailPage() {
                           <div className="text-sm text-muted-foreground">3:45</div>
                         </div>
                         <button className="p-2 rounded-full hover:bg-muted">
-                          <Play className="h-4 w-4" />
+                          <MusicIcon className="h-4 w-4" />
                         </button>
                       </div>
                     ))}
