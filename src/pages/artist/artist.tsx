@@ -15,7 +15,7 @@ import {
 import {
   GET_ARTIST_BY_SLUG,
   GET_ARTIST_TRACKS
-} from "@/queries/artists"
+} from "@/queries/artist"
 import type {
   ArtistDetailResponse,
   ArtistTracksResponse

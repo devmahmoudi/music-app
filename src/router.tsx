@@ -5,6 +5,8 @@ import About from "./pages/about";
 import NotFound from "./pages/not-found";
 import Artists from "./pages/artist/artists";
 import Artist from "./pages/artist/artist";
+import MusicDetailPage from "./pages/music/music";
+import MusicsPage from "./pages/music/musics";
 
 const router = createBrowserRouter([
   {
@@ -27,11 +29,14 @@ const router = createBrowserRouter([
         path: "artists/:slug",
         element: <Artist />,
       },
-      // TODO: Implement these pages later
-      // {
-      //   path: "music",
-      //   element: <Music />,
-      // },
+      {
+        path: "music",
+        element: <MusicsPage />,
+      },
+      {
+        path: "music/:slug", 
+        element: <MusicDetailPage />,
+      },
       {
         path: "*",
         element: <NotFound />,
