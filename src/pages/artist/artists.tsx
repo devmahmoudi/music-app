@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   Users,
   Search,
-  Filter,
   ChevronLeft,
   ChevronRight,
   Calendar,
@@ -31,8 +30,6 @@ export default function ArtistsPage() {
     "forward"
   );
   const [cursor, setCursor] = useState<string | null>(null);
-  const [endCursor, setEndCursor] = useState<string | null>(null);
-  const [startCursor, setStartCursor] = useState<string | null>(null);
 
   // Debounce search term
   useEffect(() => {
@@ -93,8 +90,6 @@ export default function ArtistsPage() {
     if (pageInfo?.hasNextPage && pageInfo.endCursor) {
       setPageDirection("forward");
       setCursor(pageInfo.endCursor);
-      setEndCursor(pageInfo.endCursor);
-      setStartCursor(pageInfo.startCursor);
     }
   };
 
@@ -102,8 +97,6 @@ export default function ArtistsPage() {
     if (pageInfo?.hasPreviousPage && pageInfo.startCursor) {
       setPageDirection("backward");
       setCursor(pageInfo.startCursor);
-      setEndCursor(pageInfo.endCursor);
-      setStartCursor(pageInfo.startCursor);
     }
   };
 
@@ -125,7 +118,7 @@ export default function ArtistsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-primary/5 to-background border-b">
+      <div className="bg-linear-to-b from-primary/5 to-background border-b">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-6">

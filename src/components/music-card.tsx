@@ -1,7 +1,6 @@
 import { Play, Clock, Music as MusicIcon } from "lucide-react"
 import { Link } from "react-router-dom"
 import type { Music } from "@/types/music"
-import { useState } from "react"
 
 interface MusicCardProps {
   music: Music
@@ -31,7 +30,6 @@ function getMockDuration(name: string) {
 }
 
 export default function MusicCard({ music }: MusicCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
   const imageColor = getMusicColor(music.name)
   const duration = getMockDuration(music.name)
 
@@ -51,8 +49,6 @@ export default function MusicCard({ music }: MusicCardProps) {
     <Link 
       to={`/music/${music.slug}`} 
       className="group block"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="relative overflow-hidden rounded-xl border bg-card p-4 transition-all hover:shadow-lg hover:-translate-y-1 h-full">
         {/* Album Art */}

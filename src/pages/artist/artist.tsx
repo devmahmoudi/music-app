@@ -9,7 +9,6 @@ import {
   Pause,
   Heart,
   Share2,
-  Users,
   Album,
   Clock
 } from "lucide-react"

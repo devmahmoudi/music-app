@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client/react"
 import SectionHeader from "@/components/section-header"
 import ArtistCard from "@/components/artist-card"
 import MusicCard from "@/components/music-card"
-import { Mic2, Music, TrendingUp, Loader2, AlertCircle } from "lucide-react"
+import { Mic2, Music, TrendingUp } from "lucide-react"
 import { GET_FEATURED_ARTISTS } from "@/queries/artist"
 import { GET_FEATURED_MUSICS } from "@/queries/music"
 import { ArtistsCollection } from "@/types/artist"
@@ -34,7 +34,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background">
+      <div className="relative overflow-hidden bg-linear-to-b from-primary/5 to-background">
         <div className="container mx-auto px-4 py-16 md:py-24">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-6">

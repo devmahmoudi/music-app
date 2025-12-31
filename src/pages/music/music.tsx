@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react"
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useQuery } from "@apollo/client/react"
 import {
@@ -8,7 +7,6 @@ import {
   Download,
   Music as MusicIcon,
   Calendar,
-  Clock,
   User,
   ExternalLink
 } from "lucide-react"
@@ -117,7 +115,7 @@ export default function MusicDetailPage() {
             {/* Music Header */}
             <div className="flex flex-col md:flex-row gap-6 items-start md:items-center mb-8">
               {/* Album Art */}
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 {music.image ? (
                   <img
                     src={music.image}
@@ -125,7 +123,7 @@ export default function MusicDetailPage() {
                     className="h-48 w-48 rounded-xl object-cover shadow-lg"
                   />
                 ) : (
-                  <div className="h-48 w-48 rounded-xl bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center shadow-lg">
+                  <div className="h-48 w-48 rounded-xl `bg-linear-to-br from-primary/20 to-primary/40 flex items-center justify-center shadow-lg">
                     <MusicIcon className="h-16 w-16 text-primary" />
                   </div>
                 )}
@@ -264,7 +262,7 @@ export default function MusicDetailPage() {
                         className="h-16 w-16 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center text-xl font-bold text-primary">
+                      <div className="h-16 w-16 rounded-full bg-linear-to-br from-primary/20 to-primary/40 flex items-center justify-center text-xl font-bold text-primary">
                         {artist.name.charAt(0)}
                       </div>
                     )}

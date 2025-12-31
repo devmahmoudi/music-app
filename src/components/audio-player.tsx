@@ -6,8 +6,6 @@ import {
   SkipForward,
   Volume2,
   VolumeX,
-  Repeat,
-  Shuffle
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 

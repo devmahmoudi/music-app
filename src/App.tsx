@@ -6,7 +6,7 @@ import Footer from "./components/footer"
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="app-theme">
+    <ThemeProvider defaultTheme="dark" storageKey="app-theme">
       <div className="min-h-screen bg-background text-foreground">
         <Navbar />
         <main>

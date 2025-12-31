@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { useQuery } from "@apollo/client/react"
-import { Link } from "react-router-dom"
 import {
   Music as MusicIcon,
   Search,
@@ -121,7 +120,7 @@ export default function MusicsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-primary/5 to-background border-b">
+      <div className="bg-linear-to-b from-primary/5 to-background border-b">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm mb-6">
