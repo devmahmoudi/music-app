@@ -1,88 +1,35 @@
-import { useQuery } from "@apollo/client/react";
-import SectionHeader from "@/components/section-header";
-import ArtistCard from "@/components/artist-card";
-import MusicCard from "@/components/music-card";
-import { Mic2, Music, TrendingUp, Loader2, AlertCircle } from "lucide-react";
-import { GET_FEATURED_ARTISTS } from "@/queries/artists";
-import { ArtistsCollection } from "@/types/artist";
-import Loading from "@/components/loading";
-import ErrorMessage from "@/components/error-message";
+import { useQuery } from "@apollo/client/react"
+import SectionHeader from "@/components/section-header"
+import ArtistCard from "@/components/artist-card"
+import MusicCard from "@/components/music-card"
+import { Mic2, Music, TrendingUp, Loader2, AlertCircle } from "lucide-react"
+import { GET_FEATURED_ARTISTS } from "@/queries/artist"
+import { GET_FEATURED_MUSICS } from "@/queries/music"
+import { ArtistsCollection } from "@/types/artist"
+import { MusicsCollection } from "@/types/music"
+import Loading from "@/components/loading"
+import ErrorMessage from "@/components/error-message"
 
 export default function Home() {
   // Fetch artists from Supabase
-  const { loading, error, data } =
-    useQuery<ArtistsCollection>(GET_FEATURED_ARTISTS);
+  const { 
+    loading: artistsLoading, 
+    error: artistsError, 
+    data: artistsData 
+  } = useQuery<ArtistsCollection>(GET_FEATURED_ARTISTS)
 
-  // Mock data for music tracks (keep for now)
-  const musicTracks = [
-    {
-      title: "Midnight City Lights",
-      artist: "Luna Echo",
-      duration: "3:45",
-      plays: 1245000,
-      likes: 98000,
-      albumColor: "bg-gradient-to-br from-pink-400 to-rose-400",
-    },
-    {
-      title: "Neon Dreams",
-      artist: "Midnight Drive",
-      duration: "4:20",
-      plays: 890000,
-      likes: 67000,
-      albumColor: "bg-gradient-to-br from-purple-400 to-indigo-400",
-    },
-    {
-      title: "Ocean Breeze",
-      artist: "Coastal Dreams",
-      duration: "3:15",
-      plays: 760000,
-      likes: 54000,
-      albumColor: "bg-gradient-to-br from-cyan-400 to-blue-400",
-    },
-    {
-      title: "Electric Storm",
-      artist: "Solar Flare",
-      duration: "3:58",
-      plays: 1560000,
-      likes: 112000,
-      albumColor: "bg-gradient-to-br from-yellow-400 to-amber-400",
-    },
-    {
-      title: "City Rain",
-      artist: "Urban Echoes",
-      duration: "4:05",
-      plays: 980000,
-      likes: 72000,
-      albumColor: "bg-gradient-to-br from-emerald-400 to-green-400",
-    },
-    {
-      title: "Golden Hour",
-      artist: "Velvet Skies",
-      duration: "5:12",
-      plays: 1340000,
-      likes: 89000,
-      albumColor: "bg-gradient-to-br from-orange-400 to-red-400",
-    },
-    {
-      title: "Starlight",
-      artist: "Luna Echo",
-      duration: "3:30",
-      plays: 1120000,
-      likes: 85000,
-      albumColor: "bg-gradient-to-br from-pink-300 to-rose-300",
-    },
-    {
-      title: "Desert Highway",
-      artist: "Midnight Drive",
-      duration: "4:45",
-      plays: 780000,
-      likes: 59000,
-      albumColor: "bg-gradient-to-br from-purple-300 to-indigo-300",
-    },
-  ];
+  // Fetch music from Supabase
+  const { 
+    loading: musicLoading, 
+    error: musicError, 
+    data: musicData 
+  } = useQuery<MusicsCollection>(GET_FEATURED_MUSICS)
 
   // Get artists from the query response
-  const artists = data?.artistsCollection?.edges || [];
+  const artists = artistsData?.artistsCollection?.edges || []
+  
+  // Get music from the query response
+  const musics = musicData?.musicsCollection?.edges || []
 
   return (
     <div className="min-h-screen">
@@ -118,12 +65,12 @@ export default function Home() {
             moreLink="/artists"
           />
 
-          {loading ? (
+          {artistsLoading ? (
             <Loading message="Loading artists..." />
-          ) : error ? (
+          ) : artistsError ? (
             <ErrorMessage
               message="Error loading artists"
-              details={error.message}
+              details={artistsError.message}
             />
           ) : artists.length === 0 ? (
             <div className="flex items-center justify-center h-64">
@@ -141,7 +88,7 @@ export default function Home() {
           )}
         </section>
 
-        {/* Trending Music Section */}
+        {/* Trending Music Section - Now using Supabase data */}
         <section>
           <SectionHeader
             title="Trending Now"
@@ -149,11 +96,27 @@ export default function Home() {
             moreLink="/music"
           />
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {musicTracks.map((track, index) => (
-              <MusicCard key={index} {...track} />
-            ))}
-          </div>
+          {musicLoading ? (
+            <Loading message="Loading music..." />
+          ) : musicError ? (
+            <ErrorMessage
+              message="Error loading music"
+              details={musicError.message}
+            />
+          ) : musics.length === 0 ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <Music className="h-8 w-8 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No music found</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {musics.map(({ node: music }) => (
+                <MusicCard key={music.id} music={music} />
+              ))}
+            </div>
+          )}
         </section>
 
         {/* Stats Section */}
@@ -164,7 +127,7 @@ export default function Home() {
                 <Music className="h-6 w-6" />
               </div>
               <h3 className="text-2xl font-bold">
-                {artists.length > 0 ? artists.length * 1000 : "50K+"}
+                {musics.length > 0 ? musics.length * 100 : "50K+"}
               </h3>
               <p className="text-muted-foreground">Tracks Available</p>
             </div>
@@ -184,7 +147,7 @@ export default function Home() {
                 <TrendingUp className="h-6 w-6" />
               </div>
               <h3 className="text-2xl font-bold">
-                {artists.length > 0 ? artists.length * 10000 : "10M+"}
+                {musics.length > 0 ? musics.length * 10000 : "10M+"}
               </h3>
               <p className="text-muted-foreground">Monthly Listeners</p>
             </div>
@@ -192,5 +155,5 @@ export default function Home() {
         </section>
       </div>
     </div>
-  );
+  )
 }
