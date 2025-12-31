@@ -1,3 +1,4 @@
+import { Music } from "@/types/music"
 import { gql } from "@apollo/client"
 
 export const GET_FEATURED_ARTISTS = gql`
@@ -152,3 +153,54 @@ export const GET_ARTIST_TRACKS = gql`
     }
   }
 `
+
+// ... existing queries ...
+
+// Query to get artist's music (using musics table)
+export const GET_ARTIST_MUSICS = gql`
+  query GetArtistMusics($artistId: BigInt!, $first: Int, $after: Cursor) {
+    musicsCollection(
+      filter: { artist_id: { eq: $artistId } }
+      first: $first
+      after: $after
+      orderBy: [{ created_at: DescNullsLast }]
+    ) {
+      edges {
+        node {
+          id
+          name
+          slug
+          lyrics
+          image
+          file
+          artist_id
+          created_at
+          updated_at
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+`
+
+// Update the response type
+export interface ArtistMusicsResponse {
+  musicsCollection: {
+    edges: Array<{
+      node: Music
+      cursor: string
+    }>
+    pageInfo: {
+      hasNextPage: boolean
+      hasPreviousPage: boolean
+      startCursor: string | null
+      endCursor: string | null
+    }
+  }
+}
